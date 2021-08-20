@@ -1,8 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const { ApolloServer, UserInputError } = require("apollo-server-express");
-const GraphQLDate = require("./graphql_date.js");
-const { mockData } = require("./mock-data.js");
+const GraphQLDate = require("./graphql-date.js");
 
 const resolvers = {
   Query: {
