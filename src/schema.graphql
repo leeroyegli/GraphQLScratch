@@ -11,6 +11,17 @@ type Issue {
   due: GraphQLDate
 }
 
+## Inputs
+# Reduced Issue schema, without server generated values.
+input IssueInputs {
+  title: String!
+  status: String
+  owner: String
+  effort: Int
+  due: GraphQLDate
+  description: String
+}
+
 ## Queries
 type Query {
   about: String!
@@ -20,4 +31,5 @@ type Query {
 ## Mutations
 type Mutation {
   setAboutMessage(message: String!): String
+  issueAdd(issue: IssueInputs!): Issue
 }

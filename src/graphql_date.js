@@ -7,6 +7,12 @@ const GraphQLDate = new GraphQLScalarType({
   serialize(value) {
     return value.toISOString();
   },
+  parseLiteral(ast) {
+    return ast.kind == Kind.STRING ? new Date(ast.value) : undefined;
+  },
+  parseValue(value) {
+    return new Date(value);
+  },
 });
 
 module.exports = GraphQLDate;

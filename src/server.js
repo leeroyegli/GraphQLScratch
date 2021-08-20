@@ -1,6 +1,22 @@
 const fs = require("fs");
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
+const { GraphQLScalarType } = require("graphql");
+const { Kind } = require("graphql/language");
+
+const GraphQLDate = new GraphQLScalarType({
+  name: "GraphQLDate",
+  description: "Convert a Date() into ISOString()",
+  serialize(value) {
+    return value.toISOString();
+  },
+  parseLiteral(ast) {
+    return ast.kind == Kind.STRING ? new Date(ast.value) : undefined;
+  },
+  parseValue(value) {
+    return new Date(value);
+  },
+});
 
 // mock data
 let aboutMessage = "Issue Tracker API v.1.0";
@@ -33,11 +49,24 @@ const resolvers = {
   },
   Mutation: {
     setAboutMessage,
+    issueAdd,
   },
+  GraphQLDate,
 };
 
 function setAboutMessage(_, { message }) {
-  return (aboutMessage = message);
+  aboutMessage = message;
+  return aboutMessage;
+}
+
+function issueAdd(_, { issue }) {
+  issue.created = new Date();
+  if (issue.status == undefined) {
+    issue.status = "New";
+  }
+  issue.id = issuesDB.length + 1;
+  issuesDB.push(issue);
+  return issue;
 }
 
 function issueList() {
