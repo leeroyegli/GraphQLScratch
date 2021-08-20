@@ -4,18 +4,26 @@ scalar GraphQLDate
 type Issue {
   id: Int!
   title: String!
-  status: String!
+  status: StatusType!
   owner: String
   effort: Int
   created: GraphQLDate!
   due: GraphQLDate
 }
 
+## Enums
+enum StatusType {
+  New
+  Assigned
+  Fixed
+  Closed
+}
+
 ## Inputs
 # Reduced Issue schema, without server generated values.
 input IssueInputs {
   title: String!
-  status: String
+  status: StatusType = New
   owner: String
   effort: Int
   due: GraphQLDate
