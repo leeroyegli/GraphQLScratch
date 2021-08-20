@@ -5,7 +5,7 @@
   "description": "Scratch project with GraphQL.",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "nodemon -e js,graphql src/server.js"
   },
   "homepage": "https://github.com/leeroyegli/GraphQLScratch#readme",
   "repository": {
