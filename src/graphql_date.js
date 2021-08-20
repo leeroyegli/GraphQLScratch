@@ -7,11 +7,15 @@ const GraphQLDate = new GraphQLScalarType({
   serialize(value) {
     return value.toISOString();
   },
-  parseLiteral(ast) {
-    return ast.kind == Kind.STRING ? new Date(ast.value) : undefined;
-  },
   parseValue(value) {
-    return new Date(value);
+    const date = new Date(value);
+    return isNaN(date) ? undefined : date;
+  },
+  parseLiteral(ast) {
+    if (ast.kind == Kind.STRING) {
+      const date = new Date(ast.value);
+      return isNaN(date) ? undefined : date;
+    }
   },
 });
 

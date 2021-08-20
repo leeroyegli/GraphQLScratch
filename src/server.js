@@ -1,51 +1,8 @@
 const fs = require("fs");
 const express = require("express");
 const { ApolloServer, UserInputError } = require("apollo-server-express");
-const { GraphQLScalarType } = require("graphql");
-const { Kind } = require("graphql/language");
-const { isNaN } = require("lodash");
-
-const GraphQLDate = new GraphQLScalarType({
-  name: "GraphQLDate",
-  description: "Convert a Date() into ISOString()",
-  serialize(value) {
-    return value.toISOString();
-  },
-  parseValue(value) {
-    const date = new Date(value);
-    return isNaN(date) ? undefined : date;
-  },
-  parseLiteral(ast) {
-    if (ast.kind == Kind.STRING) {
-      const date = new Date(ast.value);
-      return isNaN(date) ? undefined : date;
-    }
-  },
-});
-
-// mock data
-let aboutMessage = "Issue Tracker API v.1.0";
-
-const issuesDB = [
-  {
-    id: 1,
-    status: "New",
-    owner: "Lee Roy",
-    effort: 5,
-    created: new Date("2021-08-20"),
-    due: undefined,
-    title: "Error in console when clicking button",
-  },
-  {
-    id: 2,
-    status: "Assigned",
-    owner: "Frank",
-    effort: 14,
-    created: new Date("2021-07-29"),
-    due: new Date("2021-08-28"),
-    title: "Missing bottom border on panel",
-  },
-];
+const GraphQLDate = require("./graphql_date.js");
+const { mockData } = require("./mock-data.js");
 
 const resolvers = {
   Query: {
@@ -114,3 +71,26 @@ function issueList() {
     console.log("ERROR: Server has error:", err);
   }
 })();
+
+// mock data
+let aboutMessage = "Issue Tracker API v.1.0";
+const issuesDB = [
+  {
+    id: 1,
+    status: "New",
+    owner: "Lee Roy",
+    effort: 5,
+    created: new Date("2021-08-20"),
+    due: undefined,
+    title: "Error in console when clicking button",
+  },
+  {
+    id: 2,
+    status: "Assigned",
+    owner: "Frank",
+    effort: 14,
+    created: new Date("2021-07-29"),
+    due: new Date("2021-08-28"),
+    title: "Missing bottom border on panel",
+  },
+];
